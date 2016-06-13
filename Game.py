@@ -1,7 +1,6 @@
+import pygame as gfx
 import AStar
-import Node
 from AStar import *
-from Node import*
 
 def main():
 
