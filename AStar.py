@@ -45,7 +45,7 @@ class Astar:
  def __init__(self, SearchSpace, Start, Goal):
 	self.OPEN = []
 	self.CLOSED = []
-	self.nodes = SearchSpace
+	self.node = SearchSpace
 	self.start = Start
 	self.goal = Goal
 	self.current = self.start
@@ -58,21 +58,6 @@ class Astar:
 			lowestF = node.f
 			nodeWithLowestF = node
 	return nodeWithLowestF
-	
- def init_grid(self):
-	walls = ((1,1),(2,3),(4,2),(2,9),(6,2),(8,3))
-	for x in range(10):
-		for y in range(10):
-			if (x, y) in walls:
-				reachable = False
-				n = Node(x,y, False)
-			else:
-				reachable = True
-				n = Node(x,y,True)
-			self.nodes.append(n)
-	self.start = self.get_node(0,0)
-	self.start.IsStart = True	
-	self.goal.IsGoal = True
 		
  def current(self, x, y):
     return self.node[x + y]

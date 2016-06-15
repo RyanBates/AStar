@@ -11,11 +11,17 @@ def main():
 		n = Node(x,y)
 		#x goes right
 		#y goes down
-		unwalkable = True if(x >= 3 and x <= 6 and y >= 2 and y <= 7) else False
-		print("x =:{mx} y=: {my} | pos =: {position}".format(mx = x, my = y, position = n.pos))
-			
-		n.setWalk(unwalkable)
-		searchSpace.append(n)
+		walls = ((1,1),(2,3),(4,2),(2,9),(6,2),(8,3))
+		if (x, y) in walls:
+			walkable = False
+			n = Node(x,y, False)
+		else:
+			walkable = True
+			n = Node(x,y)
+		node.append(n)
+	start = get_node(0,1)
+	start.IsStart = True	
+	goal.IsGoal = True
 		
  # Initialize pygame
  pygame.init()
@@ -34,15 +40,11 @@ def main():
  # Used to manage how fast the screen updates
  clock = pygame.time.Clock()
 
-
-
 # -------- Main Program Loop -----------
  while not done:
 	for event in pygame.event.get():  # User did something
 		if event.type == pygame.QUIT:  # If user clicked close
 			done = True	 # Flag that we are done so we exit this loop
-
-
 
 
 	# Set the screen background
