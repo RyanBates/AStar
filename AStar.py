@@ -39,7 +39,6 @@ class Astar:
 	self.purple = (255,0,255)
 	self.line = (0,0,0)
 	self.color = self.white
-	self.scolor = self.blue
 	self.width = 20
 	self.height = 20
 	self.margin = 5
@@ -48,19 +47,23 @@ class Astar:
 	self.pos = (x, self.height - y)
 	self.center = (self.left + (self.width/2)), (self.top + (self.height/2))
 	self.walkable = True
-	self.Start = True
-	self.Goal = True
 		
  def setWalk(self, walkable):
-  self.walkable = walkable
-  
+	self.walkable = walkable
+
  def setStart(self, Start):
-  self.start = Start
-  
+	self.start = Start
+
+ def setGoal(self, Goal):
+	self.goal = Goal
+
  def draw(self, screen, color):
  	margin = self.margin
  	color = self.white if (self.walkable) else self.red
-	scolor = self.blue if (self.start) else self.white
+	if (self.start == True):
+		color = self.blue
+	if (self.goal == True):
+		color = self.green
  	gfx.draw.rect(screen, color, (self.left , self.top, self.width, self.height))
 
  def LowestF(self, Nodes):

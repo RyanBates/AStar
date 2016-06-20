@@ -9,22 +9,27 @@ def main():
  searchSpace = []
  for x in range(10):
 	for y in range(10):
-		for Start in (0, 1):
+		for Start in (0, 0):
 			for Goal in (8,5):
 				n = Astar(searchSpace, Start, Goal, x, y)
-				unwalkable = ((1,1),(2,3),(4,2),(2,9),(6,2),(8,3))
-				start = (0, 1)
-				goal = Goal
+				unwalkable = ((1,1),(2,3),(4,2),(2,9),(6,2),(8,3),(5,5),(3,3),(3,4),(9,6),(7,8),(8,8),(2,7))
+				begging = (0, 0)
+				end = (9, 9)
 				if (x, y) in unwalkable:
 					unwalkable = True
 				else:
 					unwalkable = False
-				if (x, y) in start:
-					start = True
+				if ((x,y) == (0,0)):
+					begging = True
 				else:
-					start = False
+					begging = False
+				if ((x,y) == (9,9)):
+					end = True
+				else:
+					end = False
 				n.setWalk(unwalkable == False)
-				n.setStart(start == True)
+				n.setStart(begging == True)
+				n.setGoal(end == True)
 				searchSpace.append(n)
 				
  # Initialize pygame
