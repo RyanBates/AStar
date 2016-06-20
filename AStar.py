@@ -7,10 +7,6 @@ class Node:
 	self.width = 20
 	self.height = 20
 	self.margin = 5
-	self.left = (self.margin + self.width) *  x + self.margin
-	self.top = (self.margin + self.height) *  y + self.margin
-	self.pos = (x, self.height - y)
-	self.center = (self.left + (self.width/2)), (self.top + (self.height/2))
 	self.g = None
 	self.f = None
 	self.h = None
@@ -29,7 +25,7 @@ class Node:
   
 class Astar:
 
- def __init__(self, SearchSpace, Start, Goal):
+ def __init__(self, SearchSpace, Start, Goal, x, y):
 	self.OPEN = []
 	self.CLOSED = []
 	self.node = SearchSpace
@@ -43,36 +39,28 @@ class Astar:
 	self.purple = (255,0,255)
 	self.line = (0,0,0)
 	self.color = self.white
+	self.scolor = self.blue
+	self.width = 20
+	self.height = 20
 	self.margin = 5
-	
- def Grid(self, SearchSpace, Start, Goal):
-	searchSpace = []
-	for x in range(10):
-		for y in range(10):
-			n = Node(x,y)
-			walls = ((1,1),(2,3),(4,2),(2,9),(6,2),(8,3))
-			if (x, y) in walls:
-				walkable = False
-				n = Node(x,y, False)
-			else:
-				walkable = True
-				n = Node(x,y)
-			self.node.append(n)
-		self.start = get_node(0,1)
-		self.start.Start = True
-		self.goal.Goal = True
+	self.left = (self.margin + self.width) *  x + self.margin
+	self.top = (self.margin + self.height) *  y + self.margin
+	self.pos = (x, self.height - y)
+	self.center = (self.left + (self.width/2)), (self.top + (self.height/2))
+	self.walkable = True
+	self.Start = True
+	self.Goal = True
 		
-
  def setWalk(self, walkable):
   self.walkable = walkable
+  
+ def setStart(self, Start):
+  self.start = Start
   
  def draw(self, screen, color):
  	margin = self.margin
  	color = self.white if (self.walkable) else self.red
-	if (self.Start == True):
-		self.color = blue
-	if (self.Goal == True):
-		self.color = purple
+	scolor = self.blue if (self.start) else self.white
  	gfx.draw.rect(screen, color, (self.left , self.top, self.width, self.height))
 
  def LowestF(self, Nodes):
@@ -94,7 +82,7 @@ class Astar:
 		return 14
 
  def GetH(self, node):
-	(self.start.x - self.goal.x),(self.start.y - self.goal.y)
+	(self.start.x - self.goal.x), (self.start.y - self.goal.y)
 	
  def neighbor(self, Node):
   nodes = []
@@ -119,7 +107,7 @@ class Astar:
  def draw_path(self, screen):
 	n = self.goal
 	while n.parent != None:
-		gfx.draw.line(screen, purple, n.center, n.parent.center, 5)
+		gfx.draw.line(screen, line, n.center, n.parent.center, 5)
 		n = n.parent
 				
  def Run(self, screen):
