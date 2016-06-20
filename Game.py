@@ -1,3 +1,4 @@
+import pygame, sys
 import pygame as gfx
 import AStar
 from AStar import *
@@ -8,20 +9,11 @@ def main():
  searchSpace = []
  for x in range(10):
 	for y in range(10):
-		n = Node(x,y)
-		#x goes right
-		#y goes down
-		walls = ((1,1),(2,3),(4,2),(2,9),(6,2),(8,3))
-		if (x, y) in walls:
-			walkable = False
-			n = Node(x,y, False)
-		else:
-			walkable = True
-			n = Node(x,y)
-		node.append(n)
-	start = get_node(0,1)
-	start.IsStart = True	
-	goal.IsGoal = True
+		for Start in range(x, y):
+			n = Astar(Start,x,y)
+			unwalkable = True if ((1,1),(2,3),(4,2),(2,9),(6,2),(8,3)) else False
+			n.setWalk(unwalkable == True)
+			searchSpace.append(n)
 		
  # Initialize pygame
  pygame.init()

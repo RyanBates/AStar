@@ -4,7 +4,6 @@ from Game import *
 class Node:
  def __init__(self, x, y):
 	self.parent = None
-	self.color = (255,255,255)	#walkable color
 	self.width = 20
 	self.height = 20
 	self.margin = 5
@@ -16,18 +15,6 @@ class Node:
 	self.f = None
 	self.h = None
 	self.walkable = True
-	 
- def draw(self, screen, color):
- 	margin = self.margin
- 	color = self.color if (self.walkable) else (255,0,0)
-	if (self.IsStart == True):
-		color = (0,0,255)
-	if (self.IsGoal == True):
-		color = (0,255,0)
- 	gfx.draw.rect(screen, color, (self.left , self.top, self.width, self.height))
-
- def setWalk(self, walkable):
-  self.walkable = walkable
 
  def setH(self, val):
   self.h = val
@@ -49,6 +36,44 @@ class Astar:
 	self.start = Start
 	self.goal = Goal
 	self.current = self.start
+	self.white = (255,255,255)
+	self.red = (255,0,0)
+	self.blue = (0,0,255)
+	self.green = (0,255,0)
+	self.purple = (255,0,255)
+	self.line = (0,0,0)
+	self.color = self.white
+	self.margin = 5
+	
+ def Grid(self, SearchSpace, Start, Goal):
+	searchSpace = []
+	for x in range(10):
+		for y in range(10):
+			n = Node(x,y)
+			walls = ((1,1),(2,3),(4,2),(2,9),(6,2),(8,3))
+			if (x, y) in walls:
+				walkable = False
+				n = Node(x,y, False)
+			else:
+				walkable = True
+				n = Node(x,y)
+			self.node.append(n)
+		self.start = get_node(0,1)
+		self.start.Start = True
+		self.goal.Goal = True
+		
+
+ def setWalk(self, walkable):
+  self.walkable = walkable
+  
+ def draw(self, screen, color):
+ 	margin = self.margin
+ 	color = self.white if (self.walkable) else self.red
+	if (self.Start == True):
+		self.color = blue
+	if (self.Goal == True):
+		self.color = purple
+ 	gfx.draw.rect(screen, color, (self.left , self.top, self.width, self.height))
 
  def LowestF(self, Nodes):
 	lowestF = -1
@@ -90,7 +115,6 @@ class Astar:
 		neighbor.h = self.diagonal(neighbor)
 		neighbor.f = neighbor.h + neighbor.g
 		neighbor.parent = node
-		 
 	
  def draw_path(self, screen):
 	n = self.goal
