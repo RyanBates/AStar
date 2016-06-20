@@ -3,7 +3,6 @@ from Game import *
 
 class Node:
  def __init__(self, x, y):
-	self.parent = None
 	self.width = 20
 	self.height = 20
 	self.margin = 5
@@ -31,7 +30,6 @@ class Astar:
 	self.node = SearchSpace
 	self.start = Start
 	self.goal = Goal
-	self.current = self.start
 	self.white = (255,255,255)
 	self.red = (255,0,0)
 	self.blue = (0,0,255)
@@ -46,6 +44,7 @@ class Astar:
 	self.top = (self.margin + self.height) *  y + self.margin
 	self.pos = (x, self.height - y)
 	self.center = (self.left + (self.width/2)), (self.top + (self.height/2))
+	self.parent = self.start
 	self.walkable = True
 		
  def setWalk(self, walkable):
@@ -87,7 +86,7 @@ class Astar:
  def GetH(self, node):
 	(self.start.x - self.goal.x), (self.start.y - self.goal.y)
 	
- def neighbor(self, Node):
+ def neighbor(self, Node, current):
   nodes = []
   if node.walkable == True:
 		if node.x < self.grid_width-1:
@@ -108,11 +107,11 @@ class Astar:
 		neighbor.parent = node
 	
  def draw_path(self, screen):
-	n = self.goal
+	n = self.start
 	while n.parent != None:
-		gfx.draw.line(screen, line, n.center, n.parent.center, 5)
+		gfx.draw.line(screen, line,(n.center, n.parent.center), 5)
 		n = n.parent
-				
+
  def Run(self, screen):
 		self.Reset()
 		open = self.OPEN

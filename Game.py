@@ -45,7 +45,6 @@ def main():
  # Loop until the user clicks the close button.
  done = False
  
-
  # Used to manage how fast the screen updates
  clock = pygame.time.Clock()
 
@@ -54,7 +53,6 @@ def main():
 	for event in pygame.event.get():  # User did something
 		if event.type == pygame.QUIT:  # If user clicked close
 			done = True	 # Flag that we are done so we exit this loop
-
 
 	# Set the screen background
 	screen.fill((0,0,0))
