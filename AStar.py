@@ -129,16 +129,27 @@ class Astar:
 		swnode = 14
 		senode = 14 
 		
- def find_path(self, screen, start, end, path=[]):
-	open = self.OPEN
-	closed = self.CLOSED
-	current = self.start
-	end = self.goal
-	open.append(current)
-	
+ def find_path(screen, start, end, path=[]):
 	path = path + [start]
 	if(start == end):
 		return[path]
+	if(not screen.has_key(start)):
+		return None
+	Shortest = None
+	for node in screen[start]:
+		if(node not in path):
+			newpath = find_path(screen, node, end, path)
+			if (newpath):
+				if(not shortest or len(newpath) < len(shortest)):
+					shortest = newpath
+	return shortest
+
+ def Run(self, screen):
+		open = self.OPEN
+		closed = self.CLOSED
+		current = self.start
+		goal = self.goal
+		open.append(current)
 		if neighbor.walkable and open:
 			open.sort(key = lambda x : x.f)
 			current = open[0]
@@ -154,13 +165,6 @@ class Astar:
 				if neighbor < neighbor.g: 
 					neighbor.parent = current
 					neighbor.g = neighbor
-		i+=1
-	if(not screen.has_key(start)):
-		return[]
-	paths = []
-	for node in screen[start]:
-		if node not in path:
-			newpaths = find_path(screen, node, end, path)
-			for newpaths in newpaths:
-				paths.append(newpath)
-	return paths
+			i+=1
+			if goal in open:
+				self.close(open)
