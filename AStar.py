@@ -21,15 +21,15 @@ class Node:
    self.g = 0
    self.f = self.h + self.g
   return self.f
-  
-class Astar:
 
+class Astar:
  def __init__(self, SearchSpace, Start, Goal, x, y):
 	self.OPEN = []
 	self.CLOSED = []
 	self.node = SearchSpace
 	self.start = Start
 	self.goal = Goal
+	self.nodewithLowestF = None
 	self.white = (255,255,255)
 	self.red = (255,0,0)
 	self.blue = (0,0,255)
@@ -44,9 +44,9 @@ class Astar:
 	self.top = (self.margin + self.height) *  y + self.margin
 	self.pos = (x, self.height - y)
 	self.center = (self.left + (self.width/2)), (self.top + (self.height/2))
-	self.parent = self.start
+	self.parent = None
 	self.walkable = True
-		
+
  def setWalk(self, walkable):
 	self.walkable = walkable
 
@@ -65,80 +65,100 @@ class Astar:
 		color = self.green
  	gfx.draw.rect(screen, color, (self.left , self.top, self.width, self.height))
 
+ def draw_line(self, screen):
+	n = self.start
+	while n.parent != None:
+		n = n.parent
+		gfx.draw.line(screen, line,(n.center, n.parent.center), 5)
+
  def LowestF(self, Nodes):
-	lowestF = -1
-	nodeWithLowestF = None 
+	lowestF = nodeWithLowestF
 	for node in Nodes:
-		if(node.f > lowestF):
-			lowestF = node.f
-			nodeWithLowestF = node
+		if(lowestF == None) or (node.getF() < lowestF.getF()):
+			lowestF = node
 	return nodeWithLowestF
-		
+
  def current(self, x, y):
     return self.node[x + y]
-	
- def GetG(self, node1, node2):
+
+ def GScore(self, node1, node2):
 	if (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 6) or (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 1):
 		return 10
 	if (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 7) or (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 5):
 		return 14
 
- def GetH(self, node):
+ def HScore(self, Start, Goal):
 	(self.start.x - self.goal.x), (self.start.y - self.goal.y)
-	
- def neighbor(self, Node, current):
-  nodes = []
-  if node.walkable == True:
-		if node.x < self.grid_width-1:
+
+ def Nextnode(self, neighbor, node):
+	if (neighbor.walkable == True):
+		neighbor.g = self.GetG(node, neighbor)
+		neighbor.h = self.diagonal(neighbor)
+		neighbor.f = neighbor.h + neighbor.g
+		neighbor.parent = node.current
+		node.append(closed)
+
+ def neighbor(self, current):
+	if (node == walkable and open):
+		west = current.node - 1
+		east = current.node + 1
+		north = current.node - width
+		south = current.node + width
+		northwest = current.node - width - 1
+		northeast = current.node - width + 1
+		southwest = current.node + width - 1
+		southeast = current.node + width + 1
+
+		wnode = SearchSpace[west]
+		enode = SearchSpace[east]
+		nnode = SearchSpace[north]
+		snode = SearchSpace[south]
+		nwnode = SearchSpace[northwest]
+		nenode = SearchSpace[northeast]
+		swnode = SearchSpace[southwest]
+		senode = SearchSpace[southeast]
+
+		#the cost of each move.
+		wnode = 10
+		enode = 10
+		nnode = 10
+		snode = 10
+		nwnode = 14
+		nenode = 14
+		swnode = 14
+		senode = 14 
+
+	if node.walkable == True:
+		if node.x < self.width-1:
 			nodes.append(self.current(node.x+1, node.y))
 		if node.y > 0:
 			nodes.append(self.current(node.x, node.y-1))
 		if node.x > 0:
 			nodes.append(self.current(node.x-1, node.y))
-		if node.y < self.grid_height-1:
+		if node.y < self.height-1:
 			nodes.append(self.current(node.x, node.y+1))
-  return nodes
-
- def Nextnode(self, neighbor, node): 
-	if neighbor.walkable == True:
-		neighbor.g = self.GetG(node, neighbor)
-		neighbor.h = self.diagonal(neighbor)
-		neighbor.f = neighbor.h + neighbor.g
-		neighbor.parent = node
-	
- def draw_path(self, screen):
-	n = self.start
-	while n.parent != None:
-		gfx.draw.line(screen, line,(n.center, n.parent.center), 5)
-		n = n.parent
 
  def Run(self, screen):
-		self.Reset()
 		open = self.OPEN
 		closed = self.CLOSED
-		start = self._start
-		goal = self._goal
-		open.append(start)
-		while open:						
+		current = self.start
+		goal = self.goal
+		open.append(current)
+		if neighbor.walkable and open:
 			open.sort(key = lambda x : x.f)
 			current = open[0]
-			open.remove(current)			
+			open.remove(current)
 			closed.append(current)
-			i = 0
-			for neighbor in current:
-				if neighbor.walkable and neighbor not in closed:
-					if neighbor not in open:
-						open.append(neighbor)
-						neighbor.parent = current						
-						neighbor.g = 10 if i < 4 else 14
-					else:
-						move = 10 if i < 4 else 14
-						movecost = move + current.g
-						if movecost < neighbor.g: 
-							neighbor.parent = current						
-							neighbor.g = movecost
-							
-				i+=1
+			if(neighbor.walkable and neighbor not in open):
+				open.append(neighbor)
+				neighbor.parent = current
+				neighbor.g = 10 if i < 4 else 14
+			else:
+				move = 10 if i < 4 else 14
+				neighbor = move + current.g
+				if neighbor < neighbor.g: 
+					neighbor.parent = current
+					neighbor.g = neighbor
+			i+=1
 			if goal in open:
-				self.PATH = self.GetPath(goal)
-				break;
+				self.close(open)
