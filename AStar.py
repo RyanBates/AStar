@@ -147,11 +147,9 @@ class Astar:
  def Run(self, screen):
 		open = self.OPEN
 		closed = self.CLOSED
-		current = self.start
-		goal = self.goal
 		open.append(current)
 		if neighbor.walkable and open:
-			open.sort(key = lambda x : x.f)
+			find_path(screen, start, end)
 			current = open[0]
 			open.remove(current)
 			closed.append(current)
