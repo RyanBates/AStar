@@ -29,6 +29,7 @@ class Astar:
 	self.node = SearchSpace
 	self.start = Start
 	self.goal = Goal
+	self.current = self.start
 	self.nodewithLowestF = None
 	self.white = (255,255,255)
 	self.red = (255,0,0)
@@ -44,7 +45,7 @@ class Astar:
 	self.top = (self.margin + self.height) *  y + self.margin
 	self.pos = (x, self.height - y)
 	self.center = (self.left + (self.width/2)), (self.top + (self.height/2))
-	self.parent = None
+	self.parent = self.current
 	self.walkable = True
 
  def setWalk(self, walkable):
@@ -66,10 +67,10 @@ class Astar:
  	gfx.draw.rect(screen, color, (self.left , self.top, self.width, self.height))
 
  def draw_line(self, screen):
-	n = self.start
-	while n.parent != None:
-		n = n.parent
-		gfx.draw.line(screen, line,(n.center, n.parent.center), 5)
+	current = self.start
+	while current.parent != None:
+		self.current = current.parent
+		gfx.draw.line(screen, line,(current.center, current.parent.center), 5)
 
  def LowestF(self, Nodes):
 	lowestF = nodeWithLowestF
@@ -79,7 +80,7 @@ class Astar:
 	return nodeWithLowestF
 
  def current(self, x, y):
-    return self.node[x + y]
+    return self.node(x,y)
 
  def GScore(self, node1, node2):
 	if (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 6) or (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 1):
@@ -127,23 +128,17 @@ class Astar:
 		nenode = 14
 		swnode = 14
 		senode = 14 
-
-	if node.walkable == True:
-		if node.x < self.width-1:
-			nodes.append(self.current(node.x+1, node.y))
-		if node.y > 0:
-			nodes.append(self.current(node.x, node.y-1))
-		if node.x > 0:
-			nodes.append(self.current(node.x-1, node.y))
-		if node.y < self.height-1:
-			nodes.append(self.current(node.x, node.y+1))
-
- def Run(self, screen):
-		open = self.OPEN
-		closed = self.CLOSED
-		current = self.start
-		goal = self.goal
-		open.append(current)
+		
+ def find_path(self, screen, start, end, path=[]):
+	open = self.OPEN
+	closed = self.CLOSED
+	current = self.start
+	end = self.goal
+	open.append(current)
+	
+	path = path + [start]
+	if(start == end):
+		return[path]
 		if neighbor.walkable and open:
 			open.sort(key = lambda x : x.f)
 			current = open[0]
@@ -159,6 +154,13 @@ class Astar:
 				if neighbor < neighbor.g: 
 					neighbor.parent = current
 					neighbor.g = neighbor
-			i+=1
-			if goal in open:
-				self.close(open)
+		i+=1
+	if(not screen.has_key(start)):
+		return[]
+	paths = []
+	for node in screen[start]:
+		if node not in path:
+			newpaths = find_path(screen, node, end, path)
+			for newpaths in newpaths:
+				paths.append(newpath)
+	return paths
