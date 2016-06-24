@@ -2,7 +2,7 @@ import Game
 from Game import *
 
 class Node:
- def __init__(self, x, y):
+ def __init__(self, x, y, walkable):
 	self.width = 20
 	self.height = 20
 	self.margin = 5
@@ -26,6 +26,7 @@ class Astar:
  def __init__(self, SearchSpace, Start, Goal, x, y):
 	self.OPEN = []
 	self.CLOSED = []
+	self.path = []
 	self.node = SearchSpace
 	self.start = Start
 	self.goal = Goal
@@ -41,9 +42,9 @@ class Astar:
 	self.width = 20
 	self.height = 20
 	self.margin = 5
-	self.left = (self.margin + self.width) *  x + self.margin
-	self.top = (self.margin + self.height) *  y + self.margin
-	self.pos = (x, self.height - y)
+	self.left = (self.margin + self.width) * x + self.margin
+	self.top = (self.margin + self.height) * x + self.margin
+	self.pos = (x, self.height - x)
 	self.center = (self.left + (self.width/2)), (self.top + (self.height/2))
 	self.parent = self.current
 	self.walkable = True
@@ -65,42 +66,27 @@ class Astar:
 	if (self.goal == True):
 		color = self.green
  	gfx.draw.rect(screen, color, (self.left , self.top, self.width, self.height))
-
  def draw_line(self, screen):
 	current = self.start
 	while current.parent != None:
 		self.current = current.parent
 		gfx.draw.line(screen, line,(current.center, current.parent.center), 5)
+		
+ def current(self, x, y):
+    return self.node(x + self.height + y)
 
  def LowestF(self, Nodes):
 	lowestF = nodeWithLowestF
 	for node in Nodes:
 		if(lowestF == None) or (node.getF() < lowestF.getF()):
-			lowestF = node
+			lowestF = current.node
 	return nodeWithLowestF
-
- def current(self, x, y):
-    return self.node(x,y)
-
- def GScore(self, node1, node2):
-	if (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 6) or (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 1):
-		return 10
-	if (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 7) or (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 5):
-		return 14
 
  def HScore(self, Start, Goal):
 	(self.start.x - self.goal.x), (self.start.y - self.goal.y)
 
- def Nextnode(self, neighbor, node):
-	if (neighbor.walkable == True):
-		neighbor.g = self.GetG(node, neighbor)
-		neighbor.h = self.diagonal(neighbor)
-		neighbor.f = neighbor.h + neighbor.g
-		neighbor.parent = node.current
-		node.append(closed)
-
  def neighbor(self, current):
-	if (node == walkable and open):
+	if (node == walkable):
 		west = current.node - 1
 		east = current.node + 1
 		north = current.node - width
@@ -109,36 +95,42 @@ class Astar:
 		northeast = current.node - width + 1
 		southwest = current.node + width - 1
 		southeast = current.node + width + 1
-
-		wnode = SearchSpace[west]
-		enode = SearchSpace[east]
-		nnode = SearchSpace[north]
-		snode = SearchSpace[south]
-		nwnode = SearchSpace[northwest]
-		nenode = SearchSpace[northeast]
-		swnode = SearchSpace[southwest]
-		senode = SearchSpace[southeast]
-
-		#the cost of each move.
-		wnode = 10
-		enode = 10
-		nnode = 10
-		snode = 10
-		nwnode = 14
-		nenode = 14
-		swnode = 14
-		senode = 14 
+	
+		wnode = SearchSpace[west].GScore = 10
+		enode = SearchSpace[east].GScore = 10
+		nnode = SearchSpace[north].GScore = 10
+		snode = SearchSpace[south].GScore = 10
+		nwnode = SearchSpace[northwest].GScore = 14
+		nenode = SearchSpace[northeast].GScore = 14
+		swnode = SearchSpace[southwest].GScore = 14
+		senode = SearchSpace[southeast].GScore = 14
 		
- def find_path(screen, start, end, path=[]):
+ def Nextnode(self, neighbor, node):
+	if (neighbor.walkable == True):
+		neighbor.g = self.GetG(node, neighbor)
+		neighbor.h = self.diagonal(neighbor)
+		neighbor.f = neighbor.h + neighbor.g
+		neighbor.parent = node.current
+		node.append(closed)
+		
+#the cost of each move.	
+ def GScore(self, node1, node2):
+	if (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 6) or (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 1):
+		return 10
+	if (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 7) or (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 5):
+		return 14
+		
+ def find_path(grid, start, goal, path=[]):
 	path = path + [start]
-	if(start == end):
+	if(start == goal):
 		return[path]
-	if(not screen.has_key(start)):
+	if(not grid.start):
 		return None
 	Shortest = None
-	for node in screen[start]:
+	for node in grid[start]:
 		if(node not in path):
-			newpath = find_path(screen, node, end, path)
+			newpath = find_path(grid, node, goal
+			, path)
 			if (newpath):
 				if(not shortest or len(newpath) < len(shortest)):
 					shortest = newpath
@@ -166,3 +158,5 @@ class Astar:
 			i+=1
 			if goal in open:
 				self.close(open)
+			Path()
+		self.draw_line(screen, self.line)

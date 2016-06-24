@@ -13,7 +13,7 @@ def main():
 			for Goal in (8,5):
 				n = Astar(searchSpace, Start, Goal, x, y)
 				unwalkable = ((1,1),(0,2),(2,3),(3,1),(4,2),(2,9),(6,2),(4,5),(8,3),(5,5),(3,3),(3,4),(9,6),(7,8),(8,8),(2,7))
-				beginning = (0, 0)
+				beginning = (0,0)
 				end = (9, 9)
 				if (x, y) in unwalkable:
 					unwalkable = True
@@ -27,8 +27,8 @@ def main():
 					end = True
 				else:
 					end = False
-				n.setWalk(unwalkable == False)
-				n.setStart(beginning == True)
+				n.setWalk(unwalkable == True)
+				n.setStart(beginning == False)
 				n.setGoal(end == True)
 				searchSpace.append(n)
 				
@@ -59,6 +59,8 @@ def main():
 
 	for i in searchSpace:
 		i.draw(screen, (255,255,255))
+		
+	Path = Astar(searchSpace, beginning,end, x, id)
 
 	# Limit to 60 frames per second
 	clock.tick(60)
