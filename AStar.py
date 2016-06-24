@@ -36,8 +36,6 @@ class Astar:
 	self.red = (255,0,0)
 	self.blue = (0,0,255)
 	self.green = (0,255,0)
-	self.purple = (255,0,255)
-	self.line = (0,0,0)
 	self.color = self.white
 	self.width = 20
 	self.height = 20
@@ -66,6 +64,7 @@ class Astar:
 	if (self.goal == True):
 		color = self.green
  	gfx.draw.rect(screen, color, (self.left , self.top, self.width, self.height))
+
  def draw_line(self, screen):
 	current = self.start
 	while current.parent != None:
@@ -73,7 +72,8 @@ class Astar:
 		gfx.draw.line(screen, line,(current.center, current.parent.center), 5)
 		
  def current(self, x, y):
-    return self.node(x + self.height + y)
+	return self.node(x + self.height + y)
+	self.node = self.blue
 
  def LowestF(self, Nodes):
 	lowestF = nodeWithLowestF
@@ -159,4 +159,3 @@ class Astar:
 			if goal in open:
 				self.close(open)
 			Path()
-		self.draw_line(screen, self.line)
