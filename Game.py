@@ -27,8 +27,8 @@ def main():
 					end = True
 				else:
 					end = False
-				n.setWalk(unwalkable == True)
-				n.setStart(beginning == False)
+				n.setWalk(unwalkable == False)
+				n.setStart(beginning == True)
 				n.setGoal(end == True)
 				searchSpace.append(n)
 				
@@ -60,7 +60,9 @@ def main():
 	for i in searchSpace:
 		i.draw(screen, (255,255,255))
 		
-	Path = Astar(searchSpace, beginning,end, x, id)
+	line = Astar(searchSpace, Start, Goal, x, y)
+	line.Run(screen)
+	
 
 	# Limit to 60 frames per second
 	clock.tick(60)

@@ -31,20 +31,21 @@ class Astar:
 	self.start = Start
 	self.goal = Goal
 	self.current = self.start
-	self.nodewithLowestF = None
+	self.NodeWithLowestF = None
 	self.white = (255,255,255)
 	self.red = (255,0,0)
 	self.blue = (0,0,255)
 	self.green = (0,255,0)
+	self.purple = (255,0,255)
 	self.color = self.white
 	self.width = 20
 	self.height = 20
 	self.margin = 5
 	self.left = (self.margin + self.width) * x + self.margin
-	self.top = (self.margin + self.height) * x + self.margin
-	self.pos = (x, self.height - x)
+	self.top = (self.margin + self.height) * y + self.margin
+	self.pos = (x, self.height - y)
 	self.center = (self.left + (self.width/2)), (self.top + (self.height/2))
-	self.parent = self.current
+	self.parent = None
 	self.walkable = True
 
  def setWalk(self, walkable):
@@ -64,98 +65,101 @@ class Astar:
 	if (self.goal == True):
 		color = self.green
  	gfx.draw.rect(screen, color, (self.left , self.top, self.width, self.height))
+	
+ def Parent(self, current, center):
+	if self.current == self.start:
+		self.parent = self.start
+		if self.start > NodeWithLowestF:
+			self.parent = NodeWithLowestF
+			if NodeWithLowestF > NodeWithLowestF:
+				self.parent = NodeWithLowestF
 
- def draw_line(self, screen):
-	current = self.start
-	while current.parent != None:
-		self.current = current.parent
-		gfx.draw.line(screen, line,(current.center, current.parent.center), 5)
-		
  def current(self, x, y):
-	return self.node(x + self.height + y)
-	self.node = self.blue
+	return self.Node(x + self.height + y)
+	self.Node = CLOSED
 
- def LowestF(self, Nodes):
-	lowestF = nodeWithLowestF
-	for node in Nodes:
-		if(lowestF == None) or (node.getF() < lowestF.getF()):
-			lowestF = current.node
-	return nodeWithLowestF
+ def LowestF(self, node):
+	lowestF = NodeWithLowestF
+	for Node in node:
+		if(lowestF == None) or (Node.getF() <= lowestF.getF()):
+			lowestF = current.Node
+	return NodeWithLowestF
 
  def HScore(self, Start, Goal):
-	(self.start.x - self.goal.x), (self.start.y - self.goal.y)
-
- def neighbor(self, current):
-	if (node == walkable):
-		west = current.node - 1
-		east = current.node + 1
-		north = current.node - width
-		south = current.node + width
-		northwest = current.node - width - 1
-		northeast = current.node - width + 1
-		southwest = current.node + width - 1
-		southeast = current.node + width + 1
+	(self.start.x.id - self.goal.x.id), (self.start.y.id - self.goal.y.id)
 	
-		wnode = SearchSpace[west].GScore = 10
-		enode = SearchSpace[east].GScore = 10
-		nnode = SearchSpace[north].GScore = 10
-		snode = SearchSpace[south].GScore = 10
-		nwnode = SearchSpace[northwest].GScore = 14
-		nenode = SearchSpace[northeast].GScore = 14
-		swnode = SearchSpace[southwest].GScore = 14
-		senode = SearchSpace[southeast].GScore = 14
-		
- def Nextnode(self, neighbor, node):
-	if (neighbor.walkable == True):
-		neighbor.g = self.GetG(node, neighbor)
-		neighbor.h = self.diagonal(neighbor)
-		neighbor.f = neighbor.h + neighbor.g
-		neighbor.parent = node.current
-		node.append(closed)
-		
-#the cost of each move.	
  def GScore(self, node1, node2):
 	if (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 6) or (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 1):
 		return 10
 	if (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 7) or (abs(self.nodes.index(node1) - self.nodes.index(node2)) == 5):
 		return 14
+
+ def neighbor(self, current):
+	if (Node == walkable):
+		Node = OPEN
+		west = current.Node - 1
+		east = current.Node + 1
+		north = current.Node - width
+		south = current.Node + width
+		northwest = current.Node - width - 1
+		northeast = current.Node - width + 1
+		southwest = current.Node + width - 1
+		southeast = current.Node + width + 1
 		
- def find_path(grid, start, goal, path=[]):
-	path = path + [start]
+		wNode = SearchSpace[west].GScore 
+		eNode = SearchSpace[east].GScore 
+		nNode = SearchSpace[north].GScore
+		sNode = SearchSpace[south].GScore
+		nwNode = SearchSpace[northwest].GScore
+		neNode = SearchSpace[northeast].GScore
+		swNode = SearchSpace[southwest].GScore
+		seNode = SearchSpace[southeast].GScore
+		
+ def print_path(self): 
+	node = self.goal
+	while node.parent is not self.start:
+		node = node.parent
+		print 'path: node: %d,%d' % (node.x, node.y)
+		
+ def draw_path(self, screen):
+	n = self.goal
+	while self.parent != self.start:
+		gfx.draw.line(screen, self.purple, self.start, self.goal, 5)
+		n = self.parent
+
+ def find_path(self, grid, SearchSpace, start, goal):
+	path = []
+	self.path = path + [start]
+	current = self.start
 	if(start == goal):
 		return[path]
-	if(not grid.start):
-		return None
+	else:
+		return[path]
 	Shortest = None
-	for node in grid[start]:
-		if(node not in path):
-			newpath = find_path(grid, node, goal
-			, path)
+	for Node in grid[start]:
+		if(Node not in path):
+			newpath = find_path(grid, Node, goal, path)
 			if (newpath):
 				if(not shortest or len(newpath) < len(shortest)):
-					shortest = newpath
-	return shortest
+					newpath = shortest
+	return newpath
 
  def Run(self, screen):
-		open = self.OPEN
-		closed = self.CLOSED
-		open.append(current)
-		if neighbor.walkable and open:
-			find_path(screen, start, end)
-			current = open[0]
-			open.remove(current)
-			closed.append(current)
-			if(neighbor.walkable and neighbor not in open):
-				open.append(neighbor)
-				neighbor.parent = current
-				neighbor.g = 10 if i < 4 else 14
-			else:
-				move = 10 if i < 4 else 14
-				neighbor = move + current.g
-				if neighbor < neighbor.g: 
-					neighbor.parent = current
-					neighbor.g = neighbor
-			i+=1
-			if goal in open:
-				self.close(open)
-			Path()
+	open = self.OPEN
+	close = self.CLOSED
+	self.current = self.start
+	self.parent = self.current
+	close.append(self.current)
+	if self.neighbor == self.walkable and open:
+		if self.neighbor <= lowestF:
+			self.neighbor = new.current
+	else:
+		self.neighbor > self.NodeWithLowestF
+		if self.neighbor > self.NodeWithLowestF:
+			self.walkable == False
+	if self.goal is open:
+		self.draw_path(screen)
+		return False
+	else:
+		self.draw_path(screen)
+		return True
